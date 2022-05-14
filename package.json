@@ -69,8 +69,10 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "@electron-forge/plugin-webpack": "6.0.0-beta.63",
+    "@types/mermaid": "^8.2.9",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "@types/reactjs-localstorage": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
@@ -85,8 +87,14 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@uiw/react-md-editor": "^3.12.3",
     "electron-squirrel-startup": "^1.0.0",
+    "katex": "^0.15.3",
+    "markdown-pdf": "^10.0.0",
+    "md-to-pdf": "^5.1.0",
+    "mermaid": "^9.1.1",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "reactjs-localstorage": "^1.0.1"
   }
 }
