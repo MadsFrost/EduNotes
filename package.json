@@ -1,8 +1,8 @@
 {
-  "name": "app",
-  "productName": "app",
+  "name": "EduNotes",
+  "productName": "EduNotes",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Markdown and math latex note taking app.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -89,12 +89,17 @@
   "dependencies": {
     "@uiw/react-md-editor": "^3.12.3",
     "electron-squirrel-startup": "^1.0.0",
+    "fs": "^0.0.1-security",
     "katex": "^0.15.3",
     "markdown-pdf": "^10.0.0",
     "md-to-pdf": "^5.1.0",
     "mermaid": "^9.1.1",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "reactjs-localstorage": "^1.0.1"
+    "react-router-dom": "^6.3.0",
+    "reactjs-localstorage": "^1.0.1",
+    "stream": "^0.0.2"
   }
 }
