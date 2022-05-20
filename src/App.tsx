@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import Editor from "./components/Editor";
-import { initStorage, getNotebooks } from "./utils/Storage";
-
+import React from "react";
+import { initStorage } from "./utils/Storage";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import Start from "./views/Start";
 export default function App() {
   React.useEffect(() => {
       initStorage();
   })
   return (
-        <div style={{ width: '100%', height: '100%' }}>
-            <Editor
-                filename="test.md"
-                value="# Test"
-            />
+        <div className='app'>
+            <HashRouter>
+                <Routes>
+                    <Route path="/" element={<Start />} />
+                </Routes>
+            </HashRouter>
         </div>
     );
 }

@@ -1,3 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0 auto;
+}
+
+.app {
+  @apply w-full h-full;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000951+0,0f011d+100,000951+100,0f011d+100 */
+  background: #000951; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #000630 0%, #0f011d 100%, #000951 100%, #0f011d 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #000951 0%,#0f011d 100%,#000951 100%,#0f011d 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #000844 0%,#0f011d 100%,#000951 100%,#0f011d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000951', endColorstr='#0f011d',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.notebook {
+  background: #000951; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #000630 0%, #0f011d 100%, #000951 100%, #0f011d 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #000951 0%,#0f011d 100%,#000951 100%,#0f011d 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(70deg, #252e72 0%,#140126 100%,#000951 100%,#0f011d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000951', endColorstr='#0f011d',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
