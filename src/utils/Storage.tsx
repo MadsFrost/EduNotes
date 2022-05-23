@@ -1,32 +1,20 @@
 import { reactLocalStorage } from 'reactjs-localstorage';
 
-export interface Notebooks {
-    [key:string]: Note[]
-}
-
 export interface Note {
+    title: string;
     markdown: string;
     filename: string;
+    category: string;
+    lastEdit: number;
 }
-export function initStorage() {
-    const template: Notebooks = {
-            "University": [
-                { 
-                    "markdown": "#Starter Template",
-                    "filename": "starter.md"
-                }
-            ],
-            "Test": [
-                { 
-                    "markdown": "#Test Template",
-                    "filename": "test.md"
-                }
-            ]
+
+export function getNotes() {
+    if (localStorage.length !== 0) {
+      return JSON.parse(reactLocalStorage.get('notes'));
     }
-    if (localStorage.length === 0) {
-        reactLocalStorage.set('notebooks', JSON.stringify(template));
-    }
+    return [];
 }
-export function getNotebooks() {
-    return reactLocalStorage.getObject('notebooks');
+
+export function updateNotes(notes: Note[]) {
+  reactLocalStorage.set('notes', JSON.stringify(notes))
 }

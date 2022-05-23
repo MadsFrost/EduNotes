@@ -1,18 +1,23 @@
 import React from "react";
-import { initStorage } from "./utils/Storage";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import Start from "./views/Start";
+import { Note, getNotes, updateNotes } from "./utils/Storage";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import ExtendedEditor from "./views/ExtendedEditor/ExtendedEditor";
+import Overview from "./views/Overview";
 export default function App() {
-  React.useEffect(() => {
-      initStorage();
-  })
+  const initialNotes = getNotes();
+  const [notes, setNotes] = React.useState<Note[]>(initialNotes);
+  const updateInternalNotes = (notes: Note[]) => {
+    setNotes(notes);
+    updateNotes(notes);
+  }
   return (
         <div className='app'>
-            <HashRouter>
-                <Routes>
-                    <Route path="/" element={<Start />} />
-                </Routes>
-            </HashRouter>
+          <HashRouter>
+            <Routes>
+              <Route path={"/"} element={<Overview notes={notes} onChange={updateInternalNotes} />} />
+              <Route path={"/edit"} element={<ExtendedEditor />} />
+            </Routes>
+          </HashRouter>
         </div>
-    );
+    )
 }

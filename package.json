@@ -1,6 +1,6 @@
 {
-  "name": "EduNotes",
-  "productName": "EduNotes",
+  "name": "MarkdownNotes",
+  "productName": "MarkdownNotes",
   "version": "1.0.0",
   "description": "Markdown and math latex note taking app.",
   "main": ".webpack/main",
@@ -99,6 +99,7 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.2",
     "@uiw/react-md-editor": "^3.12.3",
     "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",

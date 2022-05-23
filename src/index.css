@@ -7,7 +7,7 @@ body {
 }
 
 .app {
-  @apply w-full h-full;
+  @apply w-screen h-full;
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000951+0,0f011d+100,000951+100,0f011d+100 */
   background: #000951; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #000630 0%, #0f011d 100%, #000951 100%, #0f011d 100%); /* FF3.6-15 */
