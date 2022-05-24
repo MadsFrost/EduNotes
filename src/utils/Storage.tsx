@@ -18,3 +18,14 @@ export function getNotes() {
 export function updateNotes(notes: Note[]) {
   reactLocalStorage.set('notes', JSON.stringify(notes))
 }
+
+export function getColor() {
+  const color = reactLocalStorage.get('color');
+  if (typeof color === "string" && color === 'dark' || color === 'light') {
+    return color
+  }
+}
+
+export function setColor(color: 'dark' | 'light') {
+  reactLocalStorage.set('color', color);
+}

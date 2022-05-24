@@ -2,49 +2,111 @@ import React from "react";
 import document from "../../assets/icons/document.png";
 import { Note } from "../../utils/Storage";
 import { CalculateDate } from "../../utils/CalculateDate";
-
+import { useNavigate } from "react-router-dom";
 interface OverviewProps {
   notes: Note[];
-  onChange: (notes: Note[]) => void;
+  updateNotes: (notes: Note[]) => void;
+  openNote: (note: Note) => void;
 }
 
 const Overview: React.FC<OverviewProps> = (props) => {
-  const { notes, onChange } = props;
-  const addNote = () => {
-    const note: Note = {
-      title: `untitled_${notes.length + 1}`,
-      markdown: '',
-      filename: `untitled_${notes.length + 1}.md`,
-      category: 'none',
-      lastEdit: new Date(Date.now()).getTime()
-    }
-    onChange([...notes, note]);
+  const { notes, updateNotes, openNote } = props;
+  const navigate = useNavigate()
+  const [showAddNote, setAddNote] = React.useState(false);
+  const [newNote, setNewNote] = React.useState<Note>({
+    title: `untitled_${notes.length + 1}`,
+    markdown: '',
+    filename: '',
+    category: 'none',
+    lastEdit: new Date(Date.now()).getTime()
+  }) 
+
+  const toggleAddNote = () => {
+    setAddNote(!showAddNote);
   }
+
+  const enterAddNote = (key: string) => {
+    if (key === 'Enter') {
+      addNote(newNote);
+    }
+  }
+
+  const navigateEditor = (note: Note) => {
+    openNote(note);
+    navigate('/edit');
+  }
+  const addNote = (newNote: Note) => {
+    toggleAddNote()
+    const checkSameFileExists = notes.filter(note => note.filename === `${newNote.title}.md`)
+    if (checkSameFileExists.length >= 1) {
+      const noteToAdd = {...newNote, title:`${newNote.title.replace(' ', '-')}_${notes.length + 1}`,  filename: `${newNote.title.replace(' ', '-')}_${notes.length + 1}.md`, category: 'test'};
+      updateNotes([...notes, noteToAdd]);
+    } else {
+      const noteToAdd = {...newNote, filename: `${newNote.title.replace(' ', '-')}.md`, category: 'test'};
+      updateNotes([...notes, noteToAdd]);
+    }
+  }
+
   const deleteNote = (filename: string) => {
-    onChange(notes.filter((note: Note) => {
+    updateNotes(notes.filter((note: Note) => {
       return note.filename !== filename
     }));
   }
   return (
-      <div className={'w-full h-full text-white flex flex-col items-center'}>
+      <div className={'w-full h-full text-black dark:text-white flex flex-col items-center'}>
         <div className={'w-full flex flex-row justify-start items-center px-12 py-8'}>
-          <img src={document} className={'w-full max-w-[50px]'} />
+          <img draggable={false} src={document} className={'w-full max-w-[50px]'}  alt={'document'}/>
           <h1 className={'pl-4 text-xl font-bold'}>Markdown</h1><h1 className={'italic text-xl'}>Notes</h1>
         </div>
 
-        <div className={'w-full flex flex-row items-center px-12'}>
-          <button className={'align-center transition fade-in-out transition-all hover:italic'} onClick={addNote}>+ Add Note</button>
+        <div className={'w-full flex flex-row items-start justify-start px-12'}>
+          <div className={'flex flex-col p-2'}>
+            <h1 className={'text-lg font-bold'}>Add Notes</h1>
+            <div className={'w-full flex flex-col items-start'}>
+              {!showAddNote && (
+                  <>
+                  <button
+                    className={'align-center transition fade-in-out transition-all hover:font-bold'}
+                    onClick={toggleAddNote}>
+                    Add 📃
+                  </button>
+                  </>
+                )}
+              {showAddNote && (
+                  <div className='rounded-lg mt-4'>
+                    <div className='flex flex-row'>
+                      <input
+                          autoFocus
+                          className='rounded-md text-black dark:text-white text-lg px-2 bg-transparent border-none focus:border-none focus:outline-none'
+                          placeholder={'e.g: Todo List'}
+                          onChange={(e) =>
+                              setNewNote({...newNote, title: e.currentTarget.value })}
+                          onKeyPress={(event) =>  enterAddNote(event.key)}
+                          required
+                      />
+                      <span className='px-2 cursor-pointer' onClick={() => addNote(newNote)}>✅</span>
+                      <span className='px-2 cursor-pointer' onClick={toggleAddNote}>❌</span>
+                    </div>
+                  </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className={'flex-row flex w-full p-12'}>
           <div className={'flex-col flex w-full'}>
             <h1 className={'text-lg font-bold'}>Recents</h1>
             <ul>
-            {notes.map((note: Note, idx: number) => {
+            {notes.length === 0 && (
+                <span>You have no notes. <span onClick={toggleAddNote} className={'text-gray-400 cursor-pointer'}>Add one</span>.</span>
+            )}
+            {notes.sort((a,b) => {
+              return (b.lastEdit - a.lastEdit)
+            }).map((note: Note, idx: number) => {
               const time = CalculateDate(new Date(Date.now()).getTime(), note.lastEdit)
               const handle = () => deleteNote(note.filename);
               const stringTime = `${time.hour !== 0 ? time.hour + ' hours ago.' : ''} ${time.minute !== 0 && time.hour === 0 ? time.minute + ' minutes ago' : '0 minutes ago'}`
-              return <li key={`${note.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span>{`${note.title}`}<span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
+              return <li className={'cursor-pointer hover:font-bold'} key={`${note.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span><span onClick={() => navigateEditor(note)}>{`${note.title}`}</span><span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
             })}
             </ul>
           </div>

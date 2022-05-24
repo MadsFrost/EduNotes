@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import mermaid from "mermaid";
-export const Code = ({ inline, children = [], className, ...props }: any) => {
+export const Mermaid = ({ inline, children = [], className, ...props }: any) => {
   const demoid = useRef(`dome${randomid()}`);
   const code = getCode(children);
   const demo = useRef(null);

@@ -76,10 +76,12 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "@electron-forge/plugin-webpack": "6.0.0-beta.63",
+    "@types/katex": "^0.14.0",
     "@types/mermaid": "^8.2.9",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/reactjs-localstorage": "^1.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
@@ -103,7 +105,8 @@
     "@uiw/react-md-editor": "^3.12.3",
     "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",
-    "katex": "^0.15.3",
+    "github-markdown-css": "^5.1.0",
+    "katex": "^0.15.6",
     "markdown-pdf": "^10.0.0",
     "md-to-pdf": "^5.1.0",
     "mermaid": "^9.1.1",
@@ -113,8 +116,11 @@
     "postcss-preset-env": "^7.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-markdown": "^8.0.3",
     "react-router-dom": "^6.3.0",
     "reactjs-localstorage": "^1.0.1",
-    "stream": "^0.0.2"
+    "remark-gfm": "^3.0.1",
+    "stream": "^0.0.2",
+    "uuid": "^8.3.2"
   }
 }
