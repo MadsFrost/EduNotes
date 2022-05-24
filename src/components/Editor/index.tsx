@@ -13,6 +13,10 @@ const Editor: React.FC<EditorProps> = (props) => {
         console.log(markdown);
         onChange(markdown)
     }, [markdown]);
+
+    React.useEffect(() => {
+        setMarkdown(value);
+    }, [value])
     return (
         <>
             <textarea autoFocus className={'hidden'} defaultValue={markdown} onChange={(e) => setMarkdown(e.currentTarget.value)} />

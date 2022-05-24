@@ -3,7 +3,6 @@ import React from "react";
 import Editor from "../../components/Editor";
 import { Link } from "react-router-dom";
 import Download from "../../utils/Download";
-import TestEditor from "../../components/TestEditor";
 interface ExtendedEditorProps {
   notes: Note[]
   updateNotes: (notes: Note[]) => void;
@@ -36,9 +35,14 @@ const ExtendedEditor: React.FC<ExtendedEditorProps> = (props) => {
       updateNotes(newNotes);
     }
   }
+
   React.useEffect(() => {
     updateAllNotes()
   }, [internalNote]);
+
+  React.useEffect(() => {
+    setInternalNote(currentNote);
+  }, [currentNote])
   return (
       <div className='flex flex-col w-full h-full'>
         {document.title === '3453' && (
