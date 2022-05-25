@@ -11,8 +11,13 @@ interface OverviewProps {
 
 const Overview: React.FC<OverviewProps> = (props) => {
   const { notes, updateNotes, openNote } = props;
+  const Templates: {[key: string]: string} = {
+    'math': '# Math Editor Template',
+    'table': '# Table\n| a | b | c |\n|---|---|---|\n|1|2|3|\n|1|2|3|\n|1|2|3|\n|1|2|3|\n|1|2|3|\n|1|2'
+  }
   const navigate = useNavigate()
   const [showAddNote, setAddNote] = React.useState(false);
+  const [showAddTemplate, setAddTemplate] = React.useState(false);
   const [newNote, setNewNote] = React.useState<Note>({
     title: `untitled_${notes.length + 1}`,
     markdown: '',
@@ -23,6 +28,10 @@ const Overview: React.FC<OverviewProps> = (props) => {
 
   const toggleAddNote = () => {
     setAddNote(!showAddNote);
+  }
+
+  const toggleAddTemplate = () => {
+    setAddTemplate(!showAddTemplate);
   }
 
   const enterAddNote = (key: string) => {
@@ -86,6 +95,37 @@ const Overview: React.FC<OverviewProps> = (props) => {
                       />
                       <span className='px-2 cursor-pointer' onClick={() => addNote(newNote)}>✅</span>
                       <span className='px-2 cursor-pointer' onClick={toggleAddNote}>❌</span>
+                    </div>
+                  </div>
+              )}
+            </div>
+          </div>
+          <div className={'flex flex-col p-2'}>
+            <h1 className={'text-lg font-bold'}>Add Template</h1>
+            <div className={'w-full flex flex-col items-start'}>
+              {!showAddTemplate && (
+                  <>
+                  <button
+                    className={'align-center transition fade-in-out transition-all hover:font-bold'}
+                    onClick={toggleAddTemplate}>
+                    Math Example
+                  </button>
+                  </>
+                )}
+              {showAddTemplate && (
+                  <div className='rounded-lg mt-4'>
+                    <div className='flex flex-row'>
+                      <input
+                          autoFocus
+                          className='rounded-md text-black dark:text-white text-lg px-2 bg-transparent border-none focus:border-none focus:outline-none'
+                          placeholder={'e.g: Todo List'}
+                          onChange={(e) =>
+                              setNewNote({...newNote, title: e.currentTarget.value })}
+                          onKeyPress={(event) =>  enterAddNote(event.key)}
+                          required
+                      />
+                      <span className='px-2 cursor-pointer' onClick={() => addNote(newNote)}>✅</span>
+                      <span className='px-2 cursor-pointer' onClick={toggleAddTemplate}>❌</span>
                     </div>
                   </div>
               )}

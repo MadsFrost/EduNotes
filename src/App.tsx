@@ -13,7 +13,7 @@ export default function App() {
   }
   const [notes, setNotes] = React.useState<Note[]>(initialNotes);
   const [color, setColor] = React.useState<'dark'|'light'>(defaultColor);
-  const [command, setCommand] = React.useState(true);
+  const [command, setCommand] = React.useState(false);
   React.useEffect(() => {
     color === 'dark' ? document.getElementById("root").classList.add('dark')
         :
@@ -39,7 +39,7 @@ export default function App() {
   }
 
   useGlobalDOMEvents({ keydown(e: KeyboardEvent) {
-    if (e.key === 'p' && e.ctrlKey || e.metaKey) {
+    if ((e.key === 'p') && (e.ctrlKey || e.metaKey)) {
       setCommand(true);
     }
   }})

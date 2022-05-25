@@ -20,7 +20,7 @@ const ExtendedEditor: React.FC<ExtendedEditorProps> = (props) => {
   }, [currentNote])
 
   const updateCurrentNote = (markdown: string) => {
-    setInternalNote({ ...internalNote, markdown: markdown })
+    setInternalNote({ ...internalNote, markdown: markdown, lastEdit: new Date(Date.now()).getTime() })
   }
 
   const updateAllNotes = () => {
