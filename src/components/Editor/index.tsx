@@ -7,20 +7,44 @@ export interface EditorProps {
     value: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
+    const commands = ['&table-1-1 ', '&table-2 ', '&table-3', '&math-block ', '&math-inline']
     const { value, onChange } = props;
     const [markdown, setMarkdown] = React.useState(value);
     React.useEffect(() => {
-        console.log(markdown);
+        if (
+            markdown && 
+            markdown.includes('&table') &&
+            markdown.charAt(markdown.indexOf('&table')+7) &&
+            markdown.charAt(markdown.indexOf('&table')+9)
+        ) {
+            const columns = parseInt(markdown.charAt(markdown.indexOf('&table')+7));
+            const rows = parseInt(markdown.charAt(markdown.indexOf('&table')+9));
+            console.log(columns, rows);
+            console.log(true);
+            const tableHeader = `${' \n | a '.repeat(columns)} | a | \n`;
+            const tableMiddle = `${'| - |'.repeat(columns)} | - | \n`;
+            const tableRows = `${('\n | a '.repeat(columns) + '| a |').repeat(rows)}`;
+            const replaceValue = `&table-${markdown.charAt(markdown.indexOf('&table')+7)}-${markdown.charAt(markdown.indexOf('&table')+9)}`;
+            console.log(replaceValue);
+            onChange(
+                markdown
+                    .replace(replaceValue,
+                        tableHeader+tableMiddle+tableRows
+                        )
+            )
+            console.log(tableHeader + tableMiddle + tableRows);
+        }
         onChange(markdown)
     }, [markdown]);
 
     React.useEffect(() => {
         setMarkdown(value);
     }, [value])
+
     return (
         <>
-            <textarea autoFocus className={'hidden'} defaultValue={markdown} onChange={(e) => setMarkdown(e.currentTarget.value)} />
             <MDEditor
+                autoFocus
                 id={'test'}
                 hideToolbar={true}
                 spellCheck={true}
@@ -29,7 +53,7 @@ const Editor: React.FC<EditorProps> = (props) => {
                 preview="live"
                 onChange={(newValue = "") => setMarkdown(newValue)}
                 textareaProps={{
-                    placeholder: "Please enter Markdown text"
+                    placeholder: "Please enter Markdown text",
                 }}
                 height={500}
                 value={markdown}

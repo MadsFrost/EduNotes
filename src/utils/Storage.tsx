@@ -8,18 +8,18 @@ export interface Note {
     lastEdit: number;
 }
 
-export function getNotes(): Note[] {
+export function initStorage() {
   if (localStorage.getItem('notes') === null) {
-    localStorage.setItem('notes', JSON.stringify([]));
+    reactLocalStorage.set('notes', JSON.stringify([]));
   }
-  if (localStorage.length <= 1) {
-    return [{ title: 'Markdown', category: 'none', filename: 'markdown.md', lastEdit: new Date(Date.now()).getTime(), markdown: '' }]
-  } 
+}
+
+export function getNotes(): Note[] | undefined {
   return JSON.parse(reactLocalStorage.get('notes'));
 }
 
 export function updateNotes(notes: Note[]) {
-  reactLocalStorage.set('notes', JSON.stringify(notes))
+  reactLocalStorage.set('notes', JSON.stringify(notes));
 }
 
 export function getColor() {

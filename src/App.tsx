@@ -1,17 +1,19 @@
 import React from "react";
-import { Note, getNotes, updateNotes, getColor, setColor as setStorageColor } from "./utils/Storage";
+import { Note, getNotes, updateNotes, getColor, setColor as setStorageColor, initStorage } from "./utils/Storage";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import ExtendedEditor from "./views/ExtendedEditor/ExtendedEditor";
 import Overview from "./views/Overview";
 import useGlobalDOMEvents from "./hooks/useGlobalDOMEvents";
 import CommandInput from "./components/CommandInput";
 export default function App() {
+  initStorage();
   const initialNotes = getNotes();
   const defaultColor = getColor();
+ 
   if (!defaultColor) {
     setStorageColor('light')
   }
-  const [notes, setNotes] = React.useState<Note[]>(initialNotes);
+  const [notes, setNotes] = React.useState<Note[]>(initialNotes ? initialNotes : []);
   const [color, setColor] = React.useState<'dark'|'light'>(defaultColor);
   const [command, setCommand] = React.useState(false);
   React.useEffect(() => {
@@ -20,6 +22,13 @@ export default function App() {
         document.getElementById("root").classList.remove("dark");
   }, [color])
   const [currentNote, setCurrentNote] = React.useState<Note>(notes && notes[0]);
+
+  React.useEffect(() => {
+    if (currentNote) {
+      updateInternalNotes(notes ? [...notes.filter(note => note?.filename !== currentNote?.filename), currentNote] : []);
+    }
+  },[currentNote]);
+
   const updateInternalNotes = (notes: Note[]) => {
     updateNotes(notes);
     setNotes(notes);
@@ -36,6 +45,7 @@ export default function App() {
 
   const closeCommand = () => {
     setCommand(false);
+    document.getElementById('editor-text');
   }
 
   useGlobalDOMEvents({ keydown(e: KeyboardEvent) {
@@ -56,6 +66,7 @@ export default function App() {
           <HashRouter>
             {command && <div className='overlay flex flex-col items-center justify-center'>
               <CommandInput
+                currentNote={currentNote}
                 openNote={openNote} 
                 updateNotes={updateInternalNotes}
                 notes={notes}
@@ -64,7 +75,7 @@ export default function App() {
             </div>}
             <Routes>
               <Route path={"/"} element={<Overview notes={notes} updateNotes={updateInternalNotes} openNote={openNote} />} />
-              <Route path={"/edit"} element={<ExtendedEditor currentNote={currentNote} notes={notes} updateNotes={updateInternalNotes} />} />
+              <Route path={"/edit"} element={<ExtendedEditor currentNote={currentNote} updateNote={openNote} />} />
             </Routes>
           </HashRouter>
         </div>

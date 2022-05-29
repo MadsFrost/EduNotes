@@ -3,6 +3,7 @@ import document from "../../assets/icons/document.png";
 import { Note } from "../../utils/Storage";
 import { CalculateDate } from "../../utils/CalculateDate";
 import { useNavigate } from "react-router-dom";
+type Template = 'math' | 'section wtih variants';
 interface OverviewProps {
   notes: Note[];
   updateNotes: (notes: Note[]) => void;
@@ -18,6 +19,7 @@ const Overview: React.FC<OverviewProps> = (props) => {
   const navigate = useNavigate()
   const [showAddNote, setAddNote] = React.useState(false);
   const [showAddTemplate, setAddTemplate] = React.useState(false);
+  const [templateType, setTemplateType] = React.useState<Template>()
   const [newNote, setNewNote] = React.useState<Note>({
     title: `untitled_${notes.length + 1}`,
     markdown: '',
@@ -30,7 +32,10 @@ const Overview: React.FC<OverviewProps> = (props) => {
     setAddNote(!showAddNote);
   }
 
-  const toggleAddTemplate = () => {
+  const toggleAddTemplate = (template?: Template) => {
+    if (template) {
+      setTemplateType(template);
+    }
     setAddTemplate(!showAddTemplate);
   }
 
@@ -44,16 +49,28 @@ const Overview: React.FC<OverviewProps> = (props) => {
     openNote(note);
     navigate('/edit');
   }
+
   const addNote = (newNote: Note) => {
-    toggleAddNote()
+    if (showAddNote) {
+      toggleAddNote()
+    }
+
+    if (showAddTemplate) {
+      toggleAddTemplate()
+    }
     const checkSameFileExists = notes.filter(note => note.filename === `${newNote.title}.md`)
     if (checkSameFileExists.length >= 1) {
-      const noteToAdd = {...newNote, title:`${newNote.title.replace(' ', '-')}_${notes.length + 1}`,  filename: `${newNote.title.replace(' ', '-')}_${notes.length + 1}.md`, category: 'test'};
+      const noteToAdd = templateType ? {...newNote, markdown: Templates[templateType], title:`${newNote.title.replace(' ', '-')}_${notes.length + 1}`,  filename: `${newNote.title.replace(' ', '-')}_${notes.length + 1}.md`, category: 'test'}
+      : {...newNote, title:`${newNote.title.replace(' ', '-')}_${notes.length + 1}`,  filename: `${newNote.title.replace(' ', '-')}_${notes.length + 1}.md`, category: 'test'};
       updateNotes([...notes, noteToAdd]);
+      navigateEditor(noteToAdd);
     } else {
-      const noteToAdd = {...newNote, filename: `${newNote.title.replace(' ', '-')}.md`, category: 'test'};
+      const noteToAdd = templateType ? {...newNote, markdown: Templates[templateType], filename: `${newNote.title.replace(' ', '-')}.md`, category: 'test'}
+      : {...newNote, filename: `${newNote.title.replace(' ', '-')}.md`, category: 'test'};
       updateNotes([...notes, noteToAdd]);
+      navigateEditor(noteToAdd);
     }
+    setTemplateType(undefined);
   }
 
   const deleteNote = (filename: string) => {
@@ -99,19 +116,17 @@ const Overview: React.FC<OverviewProps> = (props) => {
                   </div>
               )}
             </div>
-          </div>
-          <div className={'flex flex-col p-2'}>
-            <h1 className={'text-lg font-bold'}>Add Template</h1>
+            <h1 className={'text-lg font-bold pt-4'}>Add Templates</h1>
             <div className={'w-full flex flex-col items-start'}>
               {!showAddTemplate && (
                   <>
-                  <button
-                    className={'align-center transition fade-in-out transition-all hover:font-bold'}
-                    onClick={toggleAddTemplate}>
-                    Math Example
-                  </button>
+                    <button
+                        className={'align-center transition fade-in-out transition-all hover:font-bold'}
+                        onClick={() => toggleAddTemplate('math')}>
+                      Math Example
+                    </button>
                   </>
-                )}
+              )}
               {showAddTemplate && (
                   <div className='rounded-lg mt-4'>
                     <div className='flex flex-row'>
@@ -125,7 +140,7 @@ const Overview: React.FC<OverviewProps> = (props) => {
                           required
                       />
                       <span className='px-2 cursor-pointer' onClick={() => addNote(newNote)}>✅</span>
-                      <span className='px-2 cursor-pointer' onClick={toggleAddTemplate}>❌</span>
+                      <span className='px-2 cursor-pointer' onClick={() => toggleAddTemplate}>❌</span>
                     </div>
                   </div>
               )}
@@ -136,19 +151,20 @@ const Overview: React.FC<OverviewProps> = (props) => {
         <div className={'flex-row flex w-full p-12'}>
           <div className={'flex-col flex w-full'}>
             <h1 className={'text-lg font-bold'}>Recents</h1>
-            <ul>
-            {notes.length === 0 && (
+            {!notes ? (
                 <span>You have no notes. <span onClick={toggleAddNote} className={'text-gray-400 cursor-pointer'}>Add one</span>.</span>
+            ) : (
+              <ul>
+                {notes && notes.sort((a,b) => {
+                  return (b.lastEdit - a.lastEdit)
+                }).map((note: Note, idx: number) => {
+                  const time = CalculateDate(new Date(Date.now()).getTime(), note?.lastEdit)
+                  const handle = () => deleteNote(note.filename);
+                  const stringTime = `${time.hour !== 0 ? time.hour + ' hours ago.' : ''} ${time.minute !== 0 && time.hour === 0 ? time.minute + ' minutes ago' : '0 minutes ago'}`
+                  return <li className={'cursor-pointer hover:font-bold'} key={`${note?.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span><span onClick={() => navigateEditor(note)}>{`${note?.title}`}</span><span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
+                })}
+              </ul>
             )}
-            {notes.sort((a,b) => {
-              return (b.lastEdit - a.lastEdit)
-            }).map((note: Note, idx: number) => {
-              const time = CalculateDate(new Date(Date.now()).getTime(), note.lastEdit)
-              const handle = () => deleteNote(note.filename);
-              const stringTime = `${time.hour !== 0 ? time.hour + ' hours ago.' : ''} ${time.minute !== 0 && time.hour === 0 ? time.minute + ' minutes ago' : '0 minutes ago'}`
-              return <li className={'cursor-pointer hover:font-bold'} key={`${note.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span><span onClick={() => navigateEditor(note)}>{`${note.title}`}</span><span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
-            })}
-            </ul>
           </div>
         </div>
       </div>
