@@ -61,7 +61,7 @@ export default function App() {
   }})
 
   return (
-        <div className={color === 'dark' ? 'dark app' : 'app'} data-color-mode={color}>
+        <div className={color === 'dark' ? 'app dark:bg-test' : 'app'} data-color-mode={color}>
           <span className={'fixed z-10 bottom-0 right-0 p-2 text-black dark:text-white'} onClick={() => updateColor(color === 'dark' ? 'light' : 'dark')}>{color}</span>
           <HashRouter>
             {command && <div className='overlay flex flex-col items-center justify-center'>

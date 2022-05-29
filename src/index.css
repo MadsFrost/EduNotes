@@ -6,6 +6,10 @@ body {
   margin: 0 auto;
 }
 
+.dark {
+  background-color: #0d1117;
+}
+
 .app {
   @apply w-screen h-full bg-white dark:bg-black; /* IE6-9 fallback on horizontal gradient */
 }

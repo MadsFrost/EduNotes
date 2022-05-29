@@ -1,7 +1,7 @@
 {
   "name": "MarkdownNotes",
   "productName": "MarkdownNotes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Markdown and math latex note taking app.",
   "main": ".webpack/main",
   "scripts": {

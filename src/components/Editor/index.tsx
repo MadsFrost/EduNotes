@@ -2,6 +2,7 @@ import React from 'react';
 import MDEditor from "@uiw/react-md-editor";
 import 'katex/dist/katex.css';
 import katex from 'katex';
+import GenerateTable from '../../utils/GenerateTable';
 export interface EditorProps {
     onChange: (markdown: string) => void;
     value: string;
@@ -11,34 +12,21 @@ const Editor: React.FC<EditorProps> = (props) => {
     const { value, onChange } = props;
     const [markdown, setMarkdown] = React.useState(value);
     React.useEffect(() => {
+        onChange(markdown)
+    }, [markdown]);
+
+    React.useEffect(() => {
         if (
             markdown && 
             markdown.includes('&table') &&
             markdown.charAt(markdown.indexOf('&table')+7) &&
             markdown.charAt(markdown.indexOf('&table')+9)
         ) {
-            const columns = parseInt(markdown.charAt(markdown.indexOf('&table')+7));
-            const rows = parseInt(markdown.charAt(markdown.indexOf('&table')+9));
-            console.log(columns, rows);
-            console.log(true);
-            const tableHeader = `${' \n | a '.repeat(columns)} | a | \n`;
-            const tableMiddle = `${'| - |'.repeat(columns)} | - | \n`;
-            const tableRows = `${('\n | a '.repeat(columns) + '| a |').repeat(rows)}`;
-            const replaceValue = `&table-${markdown.charAt(markdown.indexOf('&table')+7)}-${markdown.charAt(markdown.indexOf('&table')+9)}`;
-            console.log(replaceValue);
-            onChange(
-                markdown
-                    .replace(replaceValue,
-                        tableHeader+tableMiddle+tableRows
-                        )
-            )
-            console.log(tableHeader + tableMiddle + tableRows);
+            const mdWithTable = GenerateTable(markdown);
+            setMarkdown(mdWithTable);
+        } else {
+            setMarkdown(value);
         }
-        onChange(markdown)
-    }, [markdown]);
-
-    React.useEffect(() => {
-        setMarkdown(value);
     }, [value])
 
     return (
