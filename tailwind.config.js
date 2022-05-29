@@ -14,7 +14,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-        primary: '#0d1117'
+      colors: {
+        test: '#0d1117'
+      }
     },
   },
   variants: {

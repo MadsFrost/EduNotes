@@ -15,5 +15,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*", "index.d.ts"]
+  "include": ["src/**/*", "index.d.ts", "global.d.ts"]
 }

@@ -4,17 +4,18 @@ import Editor from "../../components/Editor";
 import { Link } from "react-router-dom";
 import Download from "../../utils/Download";
 interface ExtendedEditorProps {
-  notes: Note[]
-  updateNotes: (notes: Note[]) => void;
+  updateNote: (note: Note) => void;
   currentNote: Note;
 }
 const ExtendedEditor: React.FC<ExtendedEditorProps> = (props) => {
-  const { notes, updateNotes, currentNote } = props;
+  const { updateNote, currentNote } = props;
   const [internalNote, setInternalNote] = React.useState<Note>(currentNote);
   const NewDownload = Download(internalNote.markdown);
   React.useEffect(() => {
-    document.title = internalNote.filename;
-  },[internalNote])
+    document.title = currentNote.filename;
+    setInternalNote(currentNote);
+  }, [currentNote]);
+
   React.useEffect(() => {
     setInternalNote(currentNote);
   }, [currentNote])
@@ -23,26 +24,9 @@ const ExtendedEditor: React.FC<ExtendedEditorProps> = (props) => {
     setInternalNote({ ...internalNote, markdown: markdown, lastEdit: new Date(Date.now()).getTime() })
   }
 
-  const updateAllNotes = () => {
-    if (notes.length > 0 && currentNote) {
-      const newNotes = notes.map((note) => {
-        if (note.filename === internalNote.filename) {
-          return { ...internalNote }
-        } else {
-          return note
-        }
-      })
-      updateNotes(newNotes);
-    }
-  }
-
   React.useEffect(() => {
-    updateAllNotes()
+    updateNote(internalNote);
   }, [internalNote]);
-
-  React.useEffect(() => {
-    setInternalNote(currentNote);
-  }, [currentNote])
   return (
       <div className='flex flex-col w-full h-full'>
         {document.title === '3453' && (

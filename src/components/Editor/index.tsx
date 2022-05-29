@@ -2,25 +2,37 @@ import React from 'react';
 import MDEditor from "@uiw/react-md-editor";
 import 'katex/dist/katex.css';
 import katex from 'katex';
+import GenerateTable from '../../utils/GenerateTable';
 export interface EditorProps {
     onChange: (markdown: string) => void;
     value: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
+    const commands = ['&table-1-1 ', '&table-2 ', '&table-3', '&math-block ', '&math-inline']
     const { value, onChange } = props;
     const [markdown, setMarkdown] = React.useState(value);
     React.useEffect(() => {
-        console.log(markdown);
         onChange(markdown)
     }, [markdown]);
 
     React.useEffect(() => {
-        setMarkdown(value);
+        if (
+            markdown && 
+            markdown.includes('&table') &&
+            markdown.charAt(markdown.indexOf('&table')+7) &&
+            markdown.charAt(markdown.indexOf('&table')+9)
+        ) {
+            const mdWithTable = GenerateTable(markdown);
+            setMarkdown(mdWithTable);
+        } else {
+            setMarkdown(value);
+        }
     }, [value])
+
     return (
         <>
-            <textarea autoFocus className={'hidden'} defaultValue={markdown} onChange={(e) => setMarkdown(e.currentTarget.value)} />
             <MDEditor
+                autoFocus
                 id={'test'}
                 hideToolbar={true}
                 spellCheck={true}
@@ -29,7 +41,7 @@ const Editor: React.FC<EditorProps> = (props) => {
                 preview="live"
                 onChange={(newValue = "") => setMarkdown(newValue)}
                 textareaProps={{
-                    placeholder: "Please enter Markdown text"
+                    placeholder: "Please enter Markdown text",
                 }}
                 height={500}
                 value={markdown}
