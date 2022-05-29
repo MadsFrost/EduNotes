@@ -8,11 +8,14 @@ export interface Note {
     lastEdit: number;
 }
 
-export function getNotes() {
-    if (localStorage.length !== 0) {
-      return JSON.parse(reactLocalStorage.get('notes'));
-    }
-    return [];
+export function getNotes(): Note[] {
+  if (localStorage.getItem('notes') === null) {
+    localStorage.setItem('notes', JSON.stringify([]));
+  }
+  if (localStorage.length <= 1) {
+    return [{ title: 'Markdown', category: 'none', filename: 'markdown.md', lastEdit: new Date(Date.now()).getTime(), markdown: '' }]
+  } 
+  return JSON.parse(reactLocalStorage.get('notes'));
 }
 
 export function updateNotes(notes: Note[]) {
