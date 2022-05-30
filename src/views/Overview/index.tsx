@@ -161,7 +161,7 @@ const Overview: React.FC<OverviewProps> = (props) => {
                   const time = CalculateDate(new Date(Date.now()).getTime(), note?.lastEdit)
                   const handle = () => deleteNote(note.filename);
                   const stringTime = `${time.hour !== 0 ? time.hour + ' hours ago.' : ''} ${time.minute !== 0 && time.hour === 0 ? time.minute + ' minutes ago' : '0 minutes ago'}`
-                  return <li className={'cursor-pointer hover:font-bold'} key={`${note?.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span><span onClick={() => navigateEditor(note)}>{`${note?.title}`}</span><span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
+                  return <li className={'cursor-pointer hover:font-bold list-none'} key={`${note?.title}-${idx}`}><span className={'px-2 cursor-pointer'} aria-label={'Delete..'} onClick={handle}>🗑️</span><span onClick={() => navigateEditor(note)}>{`${note?.title}`}</span><span className={'pl-2 text-gray-400 text-sm'}>{stringTime}</span></li>
                 })}
               </ul>
             )}

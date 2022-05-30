@@ -241,7 +241,7 @@ const CommandInput: React.FC<CommandInputProps> = (props) => {
                         })}
                     </div>
                 </div>
-                <div className={'w-full rounded-bl-md rounded-br-md h-[10px] bg-gray-300'} />
+                <div className={'w-full rounded-bl-md rounded-br-md h-[10px] bg-gray-300 dark:bg-gray-800'} />
             </div>
         </>
     )
