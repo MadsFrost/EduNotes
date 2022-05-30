@@ -7,6 +7,14 @@ import useGlobalDOMEvents from "./hooks/useGlobalDOMEvents";
 import CommandInput from "./components/CommandInput";
 export default function App() {
   initStorage();
+  fetch('http://localhost/api/v1/login/access-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "username": "user@example.com",
+      "password": "string"
+    })
+  }).then(response => console.log(response.json()));
   const initialNotes = getNotes();
   const defaultColor = getColor();
  
