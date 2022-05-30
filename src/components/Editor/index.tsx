@@ -8,7 +8,6 @@ export interface EditorProps {
     value: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
-    const commands = ['&table-1-1 ', '&table-2 ', '&table-3', '&math-block ', '&math-inline']
     const { value, onChange } = props;
     const [markdown, setMarkdown] = React.useState(value);
     React.useEffect(() => {
@@ -16,11 +15,12 @@ const Editor: React.FC<EditorProps> = (props) => {
     }, [markdown]);
 
     React.useEffect(() => {
+    const pattern = /&table-\d-\d/;
         if (
-            markdown && 
             markdown.includes('&table') &&
-            markdown.charAt(markdown.indexOf('&table')+7) &&
-            markdown.charAt(markdown.indexOf('&table')+9)
+            pattern.test(markdown.slice(markdown.indexOf('&table'), markdown.indexOf('&table')+6)
+            + `-${markdown.charAt(markdown.indexOf('&table')+7)}`
+            + `-${markdown.charAt(markdown.indexOf('&table')+9)}`)
         ) {
             const mdWithTable = GenerateTable(markdown);
             setMarkdown(mdWithTable);
@@ -32,9 +32,9 @@ const Editor: React.FC<EditorProps> = (props) => {
     return (
         <>
             <MDEditor
-                autoFocus
                 id={'test'}
-                hideToolbar={true}
+
+                hideToolbar={false}
                 spellCheck={true}
                 style={{ position: 'relative', zIndex: 0 }}
                 fullscreen={true}

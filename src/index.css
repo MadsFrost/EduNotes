@@ -14,6 +14,9 @@ body {
   @apply w-screen h-full bg-white dark:bg-black; /* IE6-9 fallback on horizontal gradient */
 }
 
+ul, li {
+  list-style: inherit;
+}
 .notebook {
   background: #000951; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #000630 0%, #0f011d 100%, #000951 100%, #0f011d 100%); /* FF3.6-15 */
@@ -40,4 +43,8 @@ body {
 
 .rah-hint {
   @apply dark:text-gray-400 !important;
+}
+
+table {
+  @apply dark:text-white;  
 }
