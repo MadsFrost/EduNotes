@@ -12,15 +12,20 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json', '.html'],
     fallback: {
-      "os": false,
-      "fs": false,
+      "os": require.resolve("os-browserify/browser"),
+      "fs": require.resolve("fs"),
       "tls": false,
       "net": false,
       "path": false,
-      "zlib": false,
-      "http": false,
-      "https": false,
-      "stream": false
+      "zlib": require.resolve("browserify-zlib"),
+      "http": require.resolve("stream-http"),
+      "https": require.resolve("https-browserify"),
+      "stream": false,
+      "querystring": require.resolve("querystring-es3"),
+      "constants": require.resolve("constants-browserify"),
+      "assert": require.resolve("assert/"),
+      "crypto": require.resolve("crypto-browserify"),
+      "url": require.resolve("url/")
     } 
   },
 };

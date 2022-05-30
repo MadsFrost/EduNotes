@@ -3,13 +3,15 @@ import MDEditor from "@uiw/react-md-editor";
 import 'katex/dist/katex.css';
 import katex from 'katex';
 import GenerateTable from '../../utils/GenerateTable';
+
 export interface EditorProps {
     onChange: (markdown: string) => void;
     value: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
     const { value, onChange } = props;
-    const [markdown, setMarkdown] = React.useState(value);
+    const [markdown, setMarkdown] = React.useState<string>(value);
+
     React.useEffect(() => {
         onChange(markdown)
     }, [markdown]);
@@ -33,7 +35,6 @@ const Editor: React.FC<EditorProps> = (props) => {
         <>
             <MDEditor
                 id={'test'}
-
                 hideToolbar={false}
                 spellCheck={true}
                 style={{ position: 'relative', zIndex: 0 }}
@@ -46,6 +47,7 @@ const Editor: React.FC<EditorProps> = (props) => {
                 height={500}
                 value={markdown}
                 previewOptions={{
+                    remarkPlugins: [],
                     components: {
                         code: ({ inline, children = [], className, ...props }) => {
                             const txt: any = children[0] || '';

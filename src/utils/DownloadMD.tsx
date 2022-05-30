@@ -1,4 +1,4 @@
-export default function Download(markdown: string) {
+export default function DownloadMD(markdown: string) {
   var textFile = null;
   var data = new Blob([markdown], {type: 'text/plain'});
 

@@ -2,7 +2,7 @@ import { Note } from "../../utils/Storage";
 import React from "react";
 import Editor from "../../components/Editor";
 import { Link } from "react-router-dom";
-import Download from "../../utils/Download";
+import DownloadMD from "../../utils/DownloadMD";
 interface ExtendedEditorProps {
   updateNote: (note: Note) => void;
   currentNote: Note;
@@ -10,7 +10,7 @@ interface ExtendedEditorProps {
 const ExtendedEditor: React.FC<ExtendedEditorProps> = (props) => {
   const { updateNote, currentNote } = props;
   const [internalNote, setInternalNote] = React.useState<Note>(currentNote);
-  const NewDownload = Download(internalNote.markdown);
+  const NewDownload = DownloadMD(internalNote.markdown);
   React.useEffect(() => {
     document.title = currentNote.filename;
     setInternalNote(currentNote);
