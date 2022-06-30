@@ -6,11 +6,11 @@ type Props = {
 
 export default function useGlobalDOMEvents(props: Props) {
   useEffect(() => {
-    for (let [key, func] of Object.entries(props)) {
+    for (const [key, func] of Object.entries(props)) {
       window.addEventListener(key, func, false);
     }
     return () => {
-      for (let [key, func] of Object.entries(props)) {
+      for (const [key, func] of Object.entries(props)) {
         window.removeEventListener(key, func, false);
       }
     };

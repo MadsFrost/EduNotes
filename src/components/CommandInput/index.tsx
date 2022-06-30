@@ -14,7 +14,8 @@ const CommandInput: React.FC<CommandInputProps> = (props) => {
     const { openNote, updateNotes, notes: availableNotes, close, currentNote } = props;
     const [notes, setNotes] = React.useState(availableNotes);
     React.useEffect(() => {
-        notes.length !== 0 && setNotes(availableNotes)
+        availableNotes.length !== 0 && setNotes(availableNotes)
+        availableNotes.length === 0 && setNotes([])
     }, [availableNotes]);
     console.log(notes);
     const navigate = useNavigate();
@@ -135,22 +136,24 @@ const CommandInput: React.FC<CommandInputProps> = (props) => {
                     }
                     break;
                 case 'cat':
+                    // @ts-ignore
                     const searchedNote = notes.find((note) => note.filename === command[1]);
-                    if (searchedNote) {
-                        openNote(notes.find((note) => note.filename === searchedNote.filename));
-                        navigate('edit');
-                        close();
+                    if (searchedNote !== undefined) {
+                        openNote(searchedNote);
                     }
+                    navigate('edit');
+                    close();
                     break;
                 case 'rm':
+                    // @ts-ignore
                     const noteToDelete = notes.find((note) => note.filename === command[1]);
-                    if (noteToDelete.filename === currentNote.filename) {
+                    if (noteToDelete !== undefined && noteToDelete.filename === currentNote.filename) {
                         navigate('/');
-                        updateNotes(notes.filter((note) => note.filename !== noteToDelete.filename));
+                        updateNotes(notes.filter((note) => note.filename !== noteToDelete?.filename));
                         close();
                     }
                     else {
-                        updateNotes(notes.filter((note) => note.filename !== noteToDelete.filename));
+                        updateNotes(notes.filter((note) => note.filename !== noteToDelete?.filename));
                         close();
                     }
                     break;
@@ -184,7 +187,7 @@ const CommandInput: React.FC<CommandInputProps> = (props) => {
                         const noteToEdit = notes.find((note) => note.filename === command[1]);
                         const checkSameFileExists = notes.filter(note => note.filename === command[1]);
                         if (checkSameFileExists.length >= 1) {
-                            updateNotes([...notes.filter(note => note.filename !== noteToEdit.filename), {...noteToEdit, title: command[2], filename: command[2]+'.md'}])
+                            updateNotes([...notes.filter(note => note.filename !== noteToEdit?.filename), {...noteToEdit, title: command[2], filename: command[2]+'.md'}])
                             close();
                         }
                     }
